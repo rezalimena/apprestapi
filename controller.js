@@ -25,3 +25,17 @@ exports.showDataId = (req,res) =>{
             response.ok(rows,res);
     })
 }
+
+exports.addData = (req,res)=> {
+    let nim = req.body.nim;
+    let nama = req.body.nama;
+    let jurusan = req.body.jurusan;
+    let sql = "INSERT INTO mahasiswa(NIM, NAMA, JURUSAN) VALUES(?,?,?)";
+
+    con.query(sql,[nim,nama,jurusan],(err,res1)=> {
+        if(err) throw err;
+        else response.ok("Inserted Success",res);
+    })
+    
+
+}
