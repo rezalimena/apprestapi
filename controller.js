@@ -36,6 +36,17 @@ exports.addData = (req,res)=> {
         if(err) throw err;
         else response.ok("Inserted Success",res);
     })
-    
+}
 
+exports.editData = (req,res)=> {
+    let id = req.params.id
+    let nim = req.body.nim;
+    let nama = req.body.nama;
+    let jurusan = req.body.jurusan;
+    let sql = "UPDATE mahasiswa SET NIM =?, NAMA=?, JURUSAN=? WHERE ID_MAHASISWA=?";
+
+    con.query(sql,[nim,nama,jurusan,id],(err,res1)=>{
+        if(err) throw err;
+        else response.ok("Updated Success",res);
+    })
 }
