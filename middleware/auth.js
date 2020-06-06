@@ -37,5 +37,53 @@ exports.registrasi = (req,res)=>{
 
 }
 
+exports.login= (req,res) => {
+    var post = {
+        email : req.body.email,
+        password : md5(req.body.password)
+    }
+    var sqlstmt = "SELECT * FROM user WHERE EMAIL = ? AND PASSWORD = ?";
+    con.query(sqlstmt,[post.email,post.password],(err,rows,field)=>{
+        if(err) throw err
+        else 
+        if(rows.length== 1)
+        {
+            var token = jwt.sign({rows},config.secret,{
+                expiresIn : 1440
+            })
+            id_user = rows[0].id
+
+            var data = {
+                id_user : id_user,
+                access_token : token,
+                ip_address :ip.address() 
+            }
+            sqlstmt = "INSERT INTO akses_token(ID_USER,ACCESS_TOKEN,IP_ADDRESS) VALUES(?,?,?)";
+
+            con.query(sqlstmt,[data.id_user,data.access_token,data.ip_address],(err1,res2)=>{
+                if(err1) throw err1
+                else{
+                    res.json({
+                        success : true,
+                        message : "token has been generated",
+                        token : token,
+                        curruser : data.id_user
+                    })
+                }
+            })
+        }
+        else{
+            res.json({
+                success : "error",
+                message : "Email / password Wrong",                
+            })
+        }
+    })
+}
+
+exports.authPage = (req,res)=>{
+    response.ok("This Page for Authorized Only Role 2",res);
+}
+
 
 
