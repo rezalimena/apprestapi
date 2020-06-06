@@ -50,3 +50,13 @@ exports.editData = (req,res)=> {
         else response.ok("Updated Success",res);
     })
 }
+
+exports.deleteData = (req,res)=> {
+    let id = req.params.id    
+    let sql = "DELETE FROM mahasiswa WHERE ID_MAHASISWA = ?";
+
+    con.query(sql,[id],(err,res1)=>{
+        if(err) throw err;
+        else response.ok("Deleted Success",res);
+    })
+}
