@@ -60,3 +60,15 @@ exports.deleteData = (req,res)=> {
         else response.ok("Deleted Success",res);
     })
 }
+
+
+exports.nestedJSON = (req,res)=> {    
+    let sql = `SELECT A.nim, A.nama, A.jurusan, B.matakuliah, B.sks 
+    FROM mahasiswa A, matakuliah B, krs C WHERE A.id_mahasiswa=C.id_mahasiswa AND B.id_matakuliah=C.id_matakuliah`;
+
+    con.query(sql,(err,rows,field)=> {
+        if(err) throw err;
+        else
+            response.nestedJSON(rows,res);
+    });
+}
